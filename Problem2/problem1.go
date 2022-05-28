@@ -39,8 +39,10 @@ func main() {
 	var ans = "No"
 	for index := 0; index < n; index++ {
 		fmt.Print("水溶液" + strconv.Itoa(index+1) + "の濃度:")
-		fmt.Scan(&A[index])
-		if A[index] > N {
+		// fmt.Scan(&A[index])
+		A[index] = index + 3
+		fmt.Println(A[index])
+		if A[index] >= N {
 			ans = "Yes"
 		}
 	}

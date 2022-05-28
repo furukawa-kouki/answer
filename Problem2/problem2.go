@@ -86,14 +86,24 @@ func main() {
 			continue
 		}
 
-		if n[index].A < n[index].B && n[index].C < n[index].B {
+		if n[index].A != n[index].C && n[index].A < n[index].B && n[index].C < n[index].B {
 			fmt.Println(0)
 			continue
 		}
 
-		if n[index].A > n[index].B && n[index].C > n[index].B {
+		if n[index].A != n[index].C && n[index].A > n[index].B && n[index].C > n[index].B {
 			fmt.Println(0)
 			continue
+		}
+
+		var spcount = 0
+		if n[index].A == n[index].C && n[index].A > 1 {
+			n[index].A = n[index].A - 1
+			spcount = 1
+			if isOK(n[index]) {
+				fmt.Println(1)
+				continue
+			}
 		}
 
 		var countA = 0
@@ -143,14 +153,14 @@ func main() {
 		if countA != -1 {
 			ans = countA
 		}
-		if countB != -1 && countB < ans {
+		if ans == -1 || (countB != -1 && countB < ans) {
 			ans = countB
 		}
-		if countC != -1 && countB < ans {
+		if ans == -1 || (countC != -1 && countC < ans) {
 			ans = countC
 		}
 
-		fmt.Println(ans)
+		fmt.Println(ans + spcount)
 		ans = -1
 
 	}
