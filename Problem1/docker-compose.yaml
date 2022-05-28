@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  frontend:
+    build: ./fe
+    tty: true
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./fe/src:/usr/src/app/src
+    command: sh -c "yarn start"
+
+  php:
+    build:
+      context: ./php
+    ports:
+      - 8080:80
+    volumes:
+      - ./php:/var/www/html
+
+  # node:
+  #   build:
+  #     context: ./node
+  #   tty: true
+  #   ports:
+  #     - 8080:8080
+  #   volumes:
+  #     - ./node:/var/www/html
+  #   command: node /var/www/html/index.js
