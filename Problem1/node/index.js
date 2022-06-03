@@ -1,28 +1,42 @@
-const http = require('http');
-const url = require('url');
+const express = require('express');
 
-const server = http.createServer((req, res) => {
-    const queryObject = url.parse(req.url, true).query;
-    console.log(queryObject.obj);
+const app = express()
+app.use(express.json())
 
-    // ここに処理を記述してください。
-    // パターン表の取得方法がわからないのでいったん手動で書く
-    var obj = [
-        ["4", "fizz"],
-        ["7", "buzz"],
-        ["8", "hoge"],
-        ["15", "huga"]
-    ]
+app.listen(8080, () => {
+    console.log('Server is running on port 8080');
+});
 
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Request-Method', '*');
+    res.header('Access-Control-Allow-Methods', 'OPTIONS, GET, POST');
+    res.header('Access-Control-Allow-Headers', '*');
 
+    if (req.method === 'OPTIONS') {
+        res.sendStatus(200);
+    } else {
+        next();
+    }
+});
+
+app.post('/', (req, res) => {
+    const pattern = req.body.pattern;
+    console.log(pattern);
+
+    // 以下に処理を記述し、res.writeに出力内容を渡してください。
+    // ===============処理記述部分==================
+    // やっぱりどう頑張ってもpatternからjsonデータを取得できない
+    var jsonData = '{"obj": [{"num": "4", "text": "fizz"}, {"num": "7", "text": "buzz"}, {"num": "8", "text": "hoge"}, {"num": "15", "text": "huga"}]}';
+    var jsonObject = JSON.parse(jsonData);
 
     var result = "";
     var ans = "";
     for (var num = 1; num < 31; num++) {
 
-        obj.forEach(function(row) {
-            if (num % Number(row[0]) == 0) {
-                result += row[1];
+        jsonObject.obj.forEach(function(row) {
+            if (num % Number(row.num) == 0) {
+                result += row.text;
             }
         });
 
@@ -38,12 +52,9 @@ const server = http.createServer((req, res) => {
         result = "";
     }
 
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Request-Method', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST');
-    res.setHeader('Access-Control-Allow-Headers', '*');
+    // ===========================================
     res.writeHead(200, { 'Content-Type': 'text/html' });
+    // 出力結果を以下に渡してください。
     res.write(ans);
     res.end();
 });
-server.listen(8080);

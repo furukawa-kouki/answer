@@ -7,8 +7,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./fe/src:/usr/src/app/src
-    command: sh -c "yarn start"
+      - ./fe/src:/usr/app/fe/src
+    command: yarn start
 
   # php:
   #   build:
@@ -19,11 +19,11 @@ services:
   #     - ./php:/var/www/html
 
   node:
-    build:
-      context: ./node
+    build: ./node
     tty: true
     ports:
       - 8080:8080
     volumes:
-      - ./node:/var/www/html
-    command: node /var/www/html/index.js
+      - ./node/index.js:/usr/app/be/index.js
+    working_dir: /usr/app/be
+    command: node index.js
