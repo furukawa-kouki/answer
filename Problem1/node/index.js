@@ -26,15 +26,13 @@ app.post('/', (req, res) => {
 
     // 以下に処理を記述し、res.writeに出力内容を渡してください。
     // ===============処理記述部分==================
-    // やっぱりどう頑張ってもpatternからjsonデータを取得できない
-    var jsonData = '{"obj": [{"num": "4", "text": "fizz"}, {"num": "7", "text": "buzz"}, {"num": "8", "text": "hoge"}, {"num": "15", "text": "huga"}]}';
-    var jsonObject = JSON.parse(jsonData);
+    var jsonData = JSON.parse(JSON.stringify(pattern));
 
     var result = "";
     var ans = "";
     for (var num = 1; num < 31; num++) {
 
-        jsonObject.obj.forEach(function(row) {
+        jsonData.obj.forEach(function (row) {
             if (num % Number(row.num) == 0) {
                 result += row.text;
             }
